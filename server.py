@@ -1,7 +1,7 @@
  #!/usr/bin/env python
 
 import paho.mqtt.client as mqtt
-import resolvers.resolver_selector as resolver_selector
+from resolvers.resolver_selector import ResolverSelector
 
 MQTT_HOST = "mustang.local"
 
@@ -15,7 +15,7 @@ def on_connect(client, userdata, flags, rc):
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):    
-    selector = resolver_selector.ResolverSelector(msg.topic)
+    selector = ResolverSelector(msg.topic)
     resolver = selector.resolver()
     resolver.resolve(msg.payload)
 
