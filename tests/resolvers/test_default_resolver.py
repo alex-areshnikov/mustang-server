@@ -6,5 +6,3 @@ class TestDefaultResolver(object):
         resolver = DefaultResolver("unknown/topic")
         expected_message = "Resolver not found for topic \"unknown/topic\". Payload: incoming_payload"
         assert resolver.resolve("incoming_payload") == expected_message
-
-    
