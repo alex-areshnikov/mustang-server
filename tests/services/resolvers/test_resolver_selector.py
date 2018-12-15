@@ -1,5 +1,6 @@
 import pytest
-from resolvers.resolver_selector import ResolverSelector
+from services.resolvers.resolver_selector import ResolverSelector
+
 
 class TestResolverSelector(object):
     def test_it_selects_voltages_resolver(self):
