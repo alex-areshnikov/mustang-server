@@ -10,14 +10,14 @@ class Screen:
         self._printer.print(f"page {page_number}")
 
     def print(self, bank):
-        self._printer.print(f"b{bank.number}label=\"{bank.name}\"")
-        self._printer.print(f"b{bank.number}total=\"{bank.voltage}v\"")
+        self._printer.print(f"b{bank.number}label.txt=\"{bank.name}\"")
+        self._printer.print(f"b{bank.number}total.txt=\"{bank.voltage}v\"")
 
         for index, voltage in enumerate(bank.flat_voltages):
             scr_varialbe = self._scr_varialbe_for(
                 bunk_number=bank.number, cell_number=index+1)
 
-            self._printer.print(f"{scr_varialbe}=\"{voltage}v\"")
+            self._printer.print(f"{scr_varialbe}.txt=\"{voltage}v\"")
 
     def close(self):
         self._printer.close()
