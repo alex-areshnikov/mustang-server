@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import traceback
 from services.resolvers.resolver_selector import ResolverSelector
 from services.vehicle.screen import Screen
 from services.util.config import Config
@@ -13,15 +14,21 @@ def on_connect(client, userdata, flags, rc):
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    screen.page(1)
-    client.subscribe("vehicle/lto/voltages")
+    try:
+        screen.page(1)
+        client.subscribe("vehicle/lto/voltages")
+    except Exception as ex:
+        traceback.print_exc()
 
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    selector = ResolverSelector(msg.topic)
-    resolver = selector.resolver()
-    resolver.resolve(msg.payload, screen)
+    try:
+        selector = ResolverSelector(msg.topic)
+        resolver = selector.resolver()
+        resolver.resolve(msg.payload, screen)
+    except Exception as ex:
+        traceback.print_exc()
 
 
 def on_disconnect(client, userdata, rc):

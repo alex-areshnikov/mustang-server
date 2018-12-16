@@ -7,7 +7,7 @@ class VoltagesResolver:
         pass
 
     def resolve(self, payload, screen):
-        banks_voltages = self.__parse_payload(payload)
+        banks_voltages = self._parse_payload(payload)
         for index, bank_voltages in enumerate(banks_voltages):
             bank = Bank(bank_voltages=bank_voltages,
                         bank_number=index+1)
@@ -18,5 +18,5 @@ class VoltagesResolver:
 
     # private
 
-    def __parse_payload(self, payload):
+    def _parse_payload(self, payload):
         return json.loads(payload)
