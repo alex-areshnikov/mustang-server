@@ -1,9 +1,9 @@
 import paho.mqtt.client as mqtt
 from services.resolvers.resolver_selector import ResolverSelector
 from services.vehicle.screen import Screen
+from services.util.config import Config
 
-MQTT_HOST = "mustang.local"
-
+config = Config()
 screen = Screen()
 
 
@@ -33,7 +33,7 @@ mqtt_client.on_connect = on_connect
 mqtt_client.on_message = on_message
 mqtt_client.on_disconnect = on_disconnect
 
-mqtt_client.connect(MQTT_HOST, 1883, 60)
+mqtt_client.connect(config.mqtt_host, config.mqtt_port)
 
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
