@@ -1,10 +1,12 @@
 import pytest
 from services.resolvers.voltages_resolver import VoltagesResolver
+from services.vehicle.screen import Screen
 
 
 class TestVoltagesResolver(object):
     def test_it_resolves_payload(self):
         resolver = VoltagesResolver()
+        screen = Screen(debug=True)
 
         payload = '[{"bank_number":1,'
         payload += '"voltages":[2.3,4.61,6.93,9.26,11.6,13.95]},'
@@ -22,5 +24,5 @@ class TestVoltagesResolver(object):
             }
         ]
 
-        banks_voltages = resolver.resolve(payload)
+        banks_voltages = resolver.resolve(payload, screen)
         assert banks_voltages == resolved_payload

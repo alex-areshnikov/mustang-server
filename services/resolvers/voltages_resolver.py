@@ -6,13 +6,13 @@ class VoltagesResolver:
     def __init__(self, _=None):
         pass
 
-    def resolve(self, payload):
+    def resolve(self, payload, screen):
         banks_voltages = self.__parse_payload(payload)
         for index, bank_voltages in enumerate(banks_voltages):
             bank = Bank(bank_voltages=bank_voltages,
-                        bank_index=index+1)
+                        bank_number=index+1)
 
-            print(bank.to_s())
+            screen.print(bank)
 
         return banks_voltages
 

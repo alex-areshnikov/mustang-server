@@ -20,9 +20,9 @@ class TestBank(object):
         assert bank.min_cell_voltage == 2.3
         assert bank.max_cell_voltage == 2.35
 
-    def test_it_returns_bank_index(self):
+    def test_it_returns_bank_number(self):
         bank = self.bank()
-        assert bank.index == 1
+        assert bank.number == 1
 
     def test_it_returns_name(self):
         bank = self.bank()
@@ -44,4 +44,4 @@ class TestBank(object):
         if name:
             bank_voltages["name"] = name
 
-        return Bank(bank_index=1, bank_voltages=bank_voltages)
+        return Bank(bank_number=1, bank_voltages=bank_voltages)
