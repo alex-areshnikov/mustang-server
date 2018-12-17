@@ -6,6 +6,13 @@ class Screen:
     def __init__(self, debug=False):
         self._printer = (StdoutPrinter() if debug else SerialPrinter())
 
+    def initialize(self):
+        self._printer.start()
+        self._printer.print("baud=115200")
+        self._printer.close()
+        self._printer.start(115200)
+        self.page(1)
+
     def page(self, page_number=0):
         self._printer.print(f"page {page_number}")
 

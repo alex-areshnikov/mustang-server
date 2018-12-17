@@ -15,7 +15,7 @@ def on_connect(client, userdata, flags, rc):
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
     try:
-        screen.page(1)
+        screen.initialize()
         client.subscribe("vehicle/lto/voltages")
     except Exception as ex:
         traceback.print_exc()
