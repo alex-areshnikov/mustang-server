@@ -19,11 +19,11 @@ class TestScreen(object):
         out, err = capfd.readouterr()
         assert out == ("page 6\n")
 
-    def test_it_prints_voltages(self, capfd):
+    def test_it_renders_bank(self, capfd):
         screen = Screen(debug=True)
         voltages = [2.3, 4.61, 6.93, 9.26, 11.6, 13.95]
         bank = Bank(bank_number=2, bank_voltages={"voltages": voltages})
-        screen.print(bank)
+        screen.render_bank(bank)
         out, err = capfd.readouterr()
         assert out == ("b2label.txt=\"Bank 2\"\n"
                        "b2total.txt=\"13.95v\"\n"
