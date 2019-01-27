@@ -6,7 +6,8 @@ class Config(object):
     _default_config = {
         "mqtt_host": "mustang.local",
         "mqtt_port": 1883,
-        "display_setting_max_cell_voltage": 2.65
+        "t_charging": True,
+        "t_max_cell_v": 2.65
     }
 
     def __init__(self, config_file_name="config.yml"):

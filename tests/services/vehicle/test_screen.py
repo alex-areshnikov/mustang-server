@@ -5,7 +5,7 @@ from services.vehicle.lto.bank import Bank
 class TestScreen(object):
     def test_it_initializes_screen(self, capfd):
         screen = Screen(debug=True)
-        screen.initialize()
+        screen.initialize(listen_screen=False)
         out, err = capfd.readouterr()
         assert out == ("Started connection @9600\n"
                        "baud=115200\n"

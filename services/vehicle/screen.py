@@ -1,17 +1,26 @@
 from services.util.printers.serial_rpi import SerialRpi as SerialPrinter
 from services.util.printers.stdout import Stdout as StdoutPrinter
+from services.vehicle.screen_frame_processor import ScreenFrameProcessor
+
+import threading
+import time
 
 
 class Screen:
     def __init__(self, debug=False):
+        self._debug = debug
         self._printer = (StdoutPrinter() if debug else SerialPrinter())
+        self._screen_frame_processor = ScreenFrameProcessor()
 
-    def initialize(self):
+    def initialize(self, listen_screen=True):
         self._printer.start()
         self._printer.print("baud=115200")
         self._printer.close()
         self._printer.start(115200)
         self.page(1)
+
+        if(listen_screen):
+            self._start_listener()
 
     def page(self, page_number=0):
         self._printer.print(f"page {page_number}")
@@ -26,3 +35,15 @@ class Screen:
 
     def close(self):
         self._printer.close()
+
+    def _start_listener(self):
+        thread = threading.Thread(target=self._listen_screen, args=(self._printer,))
+        thread.start()
+
+    def _listen_screen(self, printer):
+        while printer.is_open():
+            frame = printer.readframe()
+            if(len(frame) > 0):
+                self._screen_frame_processor.process(frame)
+
+            time.sleep(0.5 if self._debug else 0.1)
