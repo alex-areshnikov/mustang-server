@@ -39,3 +39,11 @@ class TestScreen(object):
         screen.close()
         out, err = capfd.readouterr()
         assert out == ("Connection closed\n")
+
+    def test_it_renders_settings(self, config, capfd):
+        screen = Screen(debug=True)
+        screen.render_settings()
+        out, err = capfd.readouterr()
+        assert out == ("Settings.g_charging.txt=\"ON\"\n"
+                       "Settings.g_max_cell_v.txt=\"2.65\"\n"
+                       "Settings.g_brightness.txt=\"10\"\n")

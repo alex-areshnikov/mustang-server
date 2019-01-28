@@ -1,4 +1,3 @@
-from services.util.config import Config
 from services.vehicle.frame_processors.button_press_frame_processor import ButtonPressFrameProcessor
 from services.vehicle.frame_processors.unknown_frame_processor import UnknownFrameProcessor
 

@@ -1,19 +1,26 @@
 import os
+import sys
 import yaml
 
 
 class Config(object):
+    CONFIG_FILE_NAME = "config.yml"
+    SCREEN_SETTING_CHARGING = "screen_setting_charging"
+    SCREEN_SETTING_MAX_CELL_V = "screen_setting_max_cell_v"
+    SCREEN_SETTING_BRIGHTNESS = "screen_setting_brightness"
+
     _default_config = {
         "mqtt_host": "mustang.local",
         "mqtt_port": 1883,
-        "t_charging": True,
-        "t_max_cell_v": 2.65
+        SCREEN_SETTING_CHARGING: True,
+        SCREEN_SETTING_MAX_CELL_V: 2.65,
+        SCREEN_SETTING_BRIGHTNESS: 10
     }
 
-    def __init__(self, config_file_name="config.yml"):
+    def __init__(self):
         file_path = os.path.dirname(os.path.realpath(__file__))
-        self._config_path = file_path.replace("services/util", config_file_name)
-        self._config = self._default_config
+        self._config_path = file_path.replace("services/util", self.CONFIG_FILE_NAME)
+        self._config = self._default_config.copy()
         self._config.update(self._yaml_config())
         self._config_to_object()
 
@@ -22,7 +29,7 @@ class Config(object):
             return
 
         self._config[key] = value
-        self._config_to_yaml()
+        self._сonfig_to_yaml()
         self._config_to_object()
 
     def delete_key(self, key):

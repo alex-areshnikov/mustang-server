@@ -1,3 +1,9 @@
+from services.vehicle.settings.charging_setting import ChargingSetting
+from services.vehicle.settings.max_cell_voltage_setting import MaxCellVoltageSetting
+from services.vehicle.settings.brightness_setting import BrightnessSetting
+from services.vehicle.settings.unknown_setting import UnknownSetting
+
+
 class ButtonPressFrameProcessor:
     BUTTON_ID_INDEX = 2
     BUTTON_PRESS_STATE_INDEX = 3
@@ -13,35 +19,32 @@ class ButtonPressFrameProcessor:
         self._button_id = bytes([frame[self.BUTTON_ID_INDEX]])
         self._press_state = bytes([frame[self.BUTTON_PRESS_STATE_INDEX]])
 
-        self._button_resolver_methods = {
-            self.CHARGING_INCREASE_BUTTON_ID: self._charging_increase,
-            self.CHARGING_DECREASE_BUTTON_ID: self._charging_decrease,
-            self.MAX_CELL_V_INCREASE_BUTTON_ID: self._max_cell_v_increase,
-            self.MAX_CELL_V_DECREASE_BUTTON_ID: self._max_cell_v_decrease,
-            self.BRIGHTNESS_INCREASE_BUTTON_ID: self._brightness_increase,
-            self.BRIGHTNESS_DECREASE_BUTTON_ID: self._brightness_decrease
+        self._buttons_processors = {
+            self.CHARGING_INCREASE_BUTTON_ID: ChargingSetting,
+            self.CHARGING_DECREASE_BUTTON_ID: ChargingSetting,
+            self.MAX_CELL_V_INCREASE_BUTTON_ID: MaxCellVoltageSetting,
+            self.MAX_CELL_V_DECREASE_BUTTON_ID: MaxCellVoltageSetting,
+            self.BRIGHTNESS_INCREASE_BUTTON_ID: BrightnessSetting,
+            self.BRIGHTNESS_DECREASE_BUTTON_ID: BrightnessSetting
         }
 
+        self._increase_ids = [
+            self.CHARGING_INCREASE_BUTTON_ID,
+            self.MAX_CELL_V_INCREASE_BUTTON_ID,
+            self.BRIGHTNESS_INCREASE_BUTTON_ID
+        ]
+
+        self._decrease_ids = [
+            self.CHARGING_DECREASE_BUTTON_ID,
+            self.MAX_CELL_V_DECREASE_BUTTON_ID,
+            self.BRIGHTNESS_DECREASE_BUTTON_ID
+        ]
+
     def process(self):
-        self._button_resolver_methods.get(self._button_id, self._unknown_button_id)()
+        buttons_processor = self._buttons_processors.get(self._button_id, UnknownSetting)()
 
-    def _charging_increase(self):
-        print("Pressed: charging increase")
+        if(self._button_id in self._increase_ids):
+            buttons_processor.increase()
 
-    def _charging_decrease(self):
-        print("Pressed: charging decrease")
-
-    def _max_cell_v_increase(self):
-        print("Pressed: max_cell_v increase")
-
-    def _max_cell_v_decrease(self):
-        print("Pressed: max_cell_v decrease")
-
-    def _brightness_increase(self):
-        print("Pressed: brightness increase")
-
-    def _brightness_decrease(self):
-        print("Pressed: brightness decrease")
-
-    def _unknown_button_id(self):
-        print("Pressed: unknown button id")
+        if(self._button_id in self._decrease_ids):
+            buttons_processor.decrease()

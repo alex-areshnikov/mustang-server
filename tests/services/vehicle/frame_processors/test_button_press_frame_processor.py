@@ -1,45 +1,50 @@
+from unittest.mock import patch
+
 from services.vehicle.frame_processors.button_press_frame_processor import ButtonPressFrameProcessor
+from services.vehicle.settings.charging_setting import ChargingSetting
+from services.vehicle.settings.max_cell_voltage_setting import MaxCellVoltageSetting
+from services.vehicle.settings.brightness_setting import BrightnessSetting
 
 
 class TestButtonPressFrameProcessor(object):
-    def test_it_processes_charging_increase_frame(self, capfd):
+    @patch.object(ChargingSetting, 'increase')
+    def test_it_processes_charging_increase_frame(self, mock_method):
         frame = bytes(b'\x65\x02\x0A\x00\xFF\xFF\xFF')
         processor = ButtonPressFrameProcessor(frame)
         processor.process()
-        out, err = capfd.readouterr()
-        assert out == "Pressed: charging increase\n"
+        mock_method.assert_called_once()
 
-    def test_it_processes_charging_decrease_frame(self, capfd):
+    @patch.object(ChargingSetting, 'decrease')
+    def test_it_processes_charging_decrease_frame(self, mock_method):
         frame = bytes(b'\x65\x02\x09\x00\xFF\xFF\xFF')
         processor = ButtonPressFrameProcessor(frame)
         processor.process()
-        out, err = capfd.readouterr()
-        assert out == "Pressed: charging decrease\n"
+        mock_method.assert_called_once()
 
-    def test_it_processes_max_cell_v_increase_frame(self, capfd):
+    @patch.object(MaxCellVoltageSetting, 'increase')
+    def test_it_processes_max_cell_v_increase_frame(self, mock_method):
         frame = bytes(b'\x65\x02\x06\x00\xFF\xFF\xFF')
         processor = ButtonPressFrameProcessor(frame)
         processor.process()
-        out, err = capfd.readouterr()
-        assert out == "Pressed: max_cell_v increase\n"
+        mock_method.assert_called_once()
 
-    def test_it_processes_max_cell_v_decrease_frame(self, capfd):
+    @patch.object(MaxCellVoltageSetting, 'decrease')
+    def test_it_processes_max_cell_v_decrease_frame(self, mock_method):
         frame = bytes(b'\x65\x02\x07\x00\xFF\xFF\xFF')
         processor = ButtonPressFrameProcessor(frame)
         processor.process()
-        out, err = capfd.readouterr()
-        assert out == "Pressed: max_cell_v decrease\n"
+        mock_method.assert_called_once()
 
-    def test_it_processes_brightness_increase_frame(self, capfd):
+    @patch.object(BrightnessSetting, 'increase')
+    def test_it_processes_brightness_increase_frame(self, mock_method):
         frame = bytes(b'\x65\x02\x0D\x00\xFF\xFF\xFF')
         processor = ButtonPressFrameProcessor(frame)
         processor.process()
-        out, err = capfd.readouterr()
-        assert out == "Pressed: brightness increase\n"
+        mock_method.assert_called_once()
 
-    def test_it_processes_brightness_decrease_frame(self, capfd):
+    @patch.object(BrightnessSetting, 'decrease')
+    def test_it_processes_brightness_decrease_frame(self, mock_method):
         frame = bytes(b'\x65\x02\x0C\x00\xFF\xFF\xFF')
         processor = ButtonPressFrameProcessor(frame)
         processor.process()
-        out, err = capfd.readouterr()
-        assert out == "Pressed: brightness decrease\n"
+        mock_method.assert_called_once()

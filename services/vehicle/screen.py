@@ -1,6 +1,7 @@
 from services.util.printers.serial_rpi import SerialRpi as SerialPrinter
 from services.util.printers.stdout import Stdout as StdoutPrinter
 from services.vehicle.screen_frame_processor import ScreenFrameProcessor
+from services.util.config import Config
 
 import threading
 import time
@@ -19,11 +20,21 @@ class Screen:
         self._printer.start(115200)
         self.page(1)
 
+        if(not self._debug):
+            self.render_settings()
+
         if(listen_screen):
             self._start_listener()
 
     def page(self, page_number=0):
         self._printer.print(f"page {page_number}")
+
+    def render_settings(self):
+        config = Config()
+        charging = "ON" if config.screen_setting_charging else "OFF"
+        self._printer.print(f"Settings.g_charging.txt=\"{charging}\"")
+        self._printer.print(f"Settings.g_max_cell_v.txt=\"{config.screen_setting_max_cell_v}\"")
+        self._printer.print(f"Settings.g_brightness.txt=\"{config.screen_setting_brightness}\"")
 
     def render_bank(self, bank):
         self._printer.print(f"b{bank.number}label.txt=\"{bank.name}\"")
@@ -45,5 +56,6 @@ class Screen:
             frame = printer.readframe()
             if(len(frame) > 0):
                 self._screen_frame_processor.process(frame)
+                self.render_settings()
 
             time.sleep(0.5 if self._debug else 0.1)
