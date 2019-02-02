@@ -5,7 +5,7 @@ from services.vehicle.lto.bank import Bank
 class TestScreen(object):
     def test_it_initializes_screen(self, capfd):
         screen = Screen(debug=True)
-        screen.initialize()
+        screen.initialize(listen_screen=False)
         out, err = capfd.readouterr()
         assert out == ("Started connection @9600\n"
                        "baud=115200\n"
@@ -39,3 +39,11 @@ class TestScreen(object):
         screen.close()
         out, err = capfd.readouterr()
         assert out == ("Connection closed\n")
+
+    def test_it_renders_settings(self, config, capfd):
+        screen = Screen(debug=True)
+        screen.render_settings()
+        out, err = capfd.readouterr()
+        assert out == ("Settings.g_charging.txt=\"ON\"\n"
+                       "Settings.g_max_cell_v.txt=\"2.65\"\n"
+                       "Settings.g_brightness.txt=\"10\"\n")

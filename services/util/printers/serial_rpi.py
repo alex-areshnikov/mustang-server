@@ -14,5 +14,15 @@ class SerialRpi:
         else:
             print("Cannot write to serial. Connection is not open")
 
+    def is_open(self):
+        return self._connection.is_open
+
+    def readframe(self):
+        frame = bytearray()
+        while self._connection.in_waiting:
+            frame += self._connection.read()
+
+        return frame
+
     def close(self):
         self._connection.close()
