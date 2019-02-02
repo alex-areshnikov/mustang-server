@@ -4,7 +4,6 @@ import yaml
 
 
 class Config(object):
-    CONFIG_FILE_NAME = "config.yml"
     SCREEN_SETTING_CHARGING = "screen_setting_charging"
     SCREEN_SETTING_MAX_CELL_V = "screen_setting_max_cell_v"
     SCREEN_SETTING_BRIGHTNESS = "screen_setting_brightness"
@@ -17,17 +16,22 @@ class Config(object):
         SCREEN_SETTING_BRIGHTNESS: 10
     }
 
-    def __init__(self):
+    def __init__(self, config_file_name="config.yaml"):
         file_path = os.path.dirname(os.path.realpath(__file__))
-        self._config_path = file_path.replace("services/util", self.CONFIG_FILE_NAME)
+        self._config_path = file_path.replace("services/util", config_file_name)
         self._config = self._default_config.copy()
         self._config.update(self._yaml_config())
         self._config_to_object()
+
+    @property
+    def config_path(self):
+        return self._config_path
 
     def update(self, key, value):
         if not key:
             return
 
+        self._config.update(self._yaml_config())
         self._config[key] = value
         self._сonfig_to_yaml()
         self._config_to_object()
