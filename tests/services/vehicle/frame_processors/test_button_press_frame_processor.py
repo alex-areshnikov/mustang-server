@@ -11,40 +11,40 @@ class TestButtonPressFrameProcessor(object):
     def test_it_processes_charging_increase_frame(self, mock_method):
         frame = bytes(b'\x65\x02\x0A\x00\xFF\xFF\xFF')
         processor = ButtonPressFrameProcessor(frame)
-        processor.process()
+        processor.process(None)
         mock_method.assert_called_once()
 
     @patch.object(ChargingSetting, 'decrease')
     def test_it_processes_charging_decrease_frame(self, mock_method):
         frame = bytes(b'\x65\x02\x09\x00\xFF\xFF\xFF')
         processor = ButtonPressFrameProcessor(frame)
-        processor.process()
+        processor.process(None)
         mock_method.assert_called_once()
 
     @patch.object(MaxCellVoltageSetting, 'increase')
     def test_it_processes_max_cell_v_increase_frame(self, mock_method):
         frame = bytes(b'\x65\x02\x06\x00\xFF\xFF\xFF')
         processor = ButtonPressFrameProcessor(frame)
-        processor.process()
+        processor.process(None)
         mock_method.assert_called_once()
 
     @patch.object(MaxCellVoltageSetting, 'decrease')
     def test_it_processes_max_cell_v_decrease_frame(self, mock_method):
         frame = bytes(b'\x65\x02\x07\x00\xFF\xFF\xFF')
         processor = ButtonPressFrameProcessor(frame)
-        processor.process()
+        processor.process(None)
         mock_method.assert_called_once()
 
     @patch.object(BrightnessSetting, 'increase')
     def test_it_processes_brightness_increase_frame(self, mock_method):
         frame = bytes(b'\x65\x02\x0D\x00\xFF\xFF\xFF')
         processor = ButtonPressFrameProcessor(frame)
-        processor.process()
+        processor.process(None)
         mock_method.assert_called_once()
 
     @patch.object(BrightnessSetting, 'decrease')
     def test_it_processes_brightness_decrease_frame(self, mock_method):
         frame = bytes(b'\x65\x02\x0C\x00\xFF\xFF\xFF')
         processor = ButtonPressFrameProcessor(frame)
-        processor.process()
+        processor.process(None)
         mock_method.assert_called_once()

@@ -40,7 +40,7 @@ class ButtonPressFrameProcessor:
             self.BRIGHTNESS_DECREASE_BUTTON_ID
         ]
 
-    def process(self):
+    def process(self, _):
         buttons_processor = self._buttons_processors.get(self._button_id, UnknownSetting)()
 
         if(self._button_id in self._increase_ids):
