@@ -2,6 +2,7 @@ import os
 import pytest
 from unittest.mock import patch
 from services.util.config import Config
+from services.vehicle.lto.bank import Bank
 
 
 @pytest.fixture
@@ -20,3 +21,9 @@ def make_config():
 
     yield _make_config
     os.remove(Config(config_file_name="test_config.yaml").config_path)
+
+
+@pytest.fixture
+def bank():
+    voltages = [2.3, 4.61, 6.93, 9.26, 11.6, 13.95]
+    return Bank(bank_number=2, bank_voltages={"voltages": voltages})

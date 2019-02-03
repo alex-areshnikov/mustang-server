@@ -1,5 +1,4 @@
 from services.vehicle.screen import Screen
-from services.vehicle.lto.bank import Bank
 
 
 class TestScreen(object):
@@ -15,17 +14,24 @@ class TestScreen(object):
 
     def test_it_sets_page(self, capfd):
         screen = Screen(debug=True)
-        screen.page(6)
+        screen.page(screen.SETTINGS_PAGE)
+        screen.page("NonExistingPgae")
         out, err = capfd.readouterr()
-        assert out == ("page 6\n")
+        assert out == ("page 2\npage 0\n")
 
-    def test_it_renders_bank(self, capfd):
+    def test_it_does_not_render_bank(self, bank, capfd):
         screen = Screen(debug=True)
-        voltages = [2.3, 4.61, 6.93, 9.26, 11.6, 13.95]
-        bank = Bank(bank_number=2, bank_voltages={"voltages": voltages})
         screen.render_bank(bank)
         out, err = capfd.readouterr()
-        assert out == ("b2label.txt=\"Bank 2\"\n"
+        assert out == ""
+
+    def test_it_renders_bank(self, bank, capfd):
+        screen = Screen(debug=True)
+        screen.page(screen.VOLTAGES_PAGE)
+        screen.render_bank(bank)
+        out, err = capfd.readouterr()
+        assert out == ("page 1\n"
+                       "b2label.txt=\"Bank 2\"\n"
                        "b2total.txt=\"13.95v\"\n"
                        "b2s1.txt=\"2.3v\"\n"
                        "b2s2.txt=\"2.31v\"\n"
@@ -44,6 +50,6 @@ class TestScreen(object):
         screen = Screen(debug=True)
         screen.render_settings()
         out, err = capfd.readouterr()
-        assert out == ("Settings.g_charging.txt=\"ON\"\n"
-                       "Settings.g_max_cell_v.txt=\"2.65\"\n"
-                       "Settings.g_brightness.txt=\"10\"\n")
+        assert out == ("SettingsPage.g_charging.txt=\"ON\"\n"
+                       "SettingsPage.g_max_cell_v.txt=\"2.65\"\n"
+                       "SettingsPage.g_brightness.txt=\"10\"\n")
