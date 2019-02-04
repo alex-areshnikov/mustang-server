@@ -1,4 +1,4 @@
-from services.vehicle.frame_processors.page_change_processor import PageChangeProcessor
+from services.vehicle.screen_listener.frame_processors.page_change_processor import PageChangeProcessor
 
 
 class TestPageChangeProcessor(object):

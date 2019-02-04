@@ -17,8 +17,12 @@ class Config(object):
     }
 
     def __init__(self, config_file_name="config.yaml"):
+        self._config_file_name = config_file_name
+        self.reload()
+
+    def reload(self):
         file_path = os.path.dirname(os.path.realpath(__file__))
-        self._config_path = file_path.replace("services/util", config_file_name)
+        self._config_path = file_path.replace("services/util", self._config_file_name)
         self._config = self._default_config.copy()
         self._config.update(self._yaml_config())
         self._config_to_object()

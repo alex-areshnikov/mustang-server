@@ -1,6 +1,6 @@
-from services.vehicle.frame_processors.button_press_frame_processor import ButtonPressFrameProcessor
-from services.vehicle.frame_processors.page_change_processor import PageChangeProcessor
-from services.vehicle.frame_processors.unknown_frame_processor import UnknownFrameProcessor
+from services.vehicle.screen_listener.frame_processors.button_press_frame_processor import ButtonPressFrameProcessor
+from services.vehicle.screen_listener.frame_processors.page_change_processor import PageChangeProcessor
+from services.vehicle.screen_listener.frame_processors.unknown_frame_processor import UnknownFrameProcessor
 
 
 class ScreenFrameProcessor:

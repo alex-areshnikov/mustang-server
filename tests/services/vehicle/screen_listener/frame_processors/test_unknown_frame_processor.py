@@ -1,4 +1,4 @@
-from services.vehicle.frame_processors.unknown_frame_processor import UnknownFrameProcessor
+from services.vehicle.screen_listener.frame_processors.unknown_frame_processor import UnknownFrameProcessor
 
 
 class TestUnknownFrameProcessor(object):
