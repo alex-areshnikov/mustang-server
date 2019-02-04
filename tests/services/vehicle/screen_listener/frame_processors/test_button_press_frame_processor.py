@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from services.vehicle.frame_processors.button_press_frame_processor import ButtonPressFrameProcessor
+from services.vehicle.screen_listener.frame_processors.button_press_frame_processor import ButtonPressFrameProcessor
 from services.vehicle.settings.charging_setting import ChargingSetting
 from services.vehicle.settings.max_cell_voltage_setting import MaxCellVoltageSetting
 from services.vehicle.settings.brightness_setting import BrightnessSetting
