@@ -1,4 +1,3 @@
-import pytest
 from services.resolvers.default_resolver import DefaultResolver
 
 

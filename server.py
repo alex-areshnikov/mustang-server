@@ -3,9 +3,12 @@ import traceback
 from services.resolvers.resolver_selector import ResolverSelector
 from services.vehicle.screen import Screen
 from services.util.config import Config
+from services.publishers.ping_publisher import PingPublisher
+from services.vehicle.keep_alive import KeepAlive
 
 config = Config()
 screen = Screen()
+keep_alive = KeepAlive(screen)
 
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -17,6 +20,8 @@ def on_connect(client, userdata, flags, rc):
     try:
         screen.initialize()
         client.subscribe("vehicle/lto/voltages")
+        client.subscribe(PingPublisher.KEEP_ALIVE_TOPIC)
+        PingPublisher(client, keep_alive).run()
     except Exception as ex:
         traceback.print_exc()
 
@@ -26,7 +31,7 @@ def on_message(client, userdata, msg):
     try:
         selector = ResolverSelector(msg.topic)
         resolver = selector.resolver()
-        resolver.resolve(msg.payload, screen)
+        resolver.resolve(msg.payload, keep_alive)
     except Exception as ex:
         traceback.print_exc()
 
