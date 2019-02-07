@@ -3,6 +3,7 @@ from services.util.communicators.stdout import Stdout as StdoutCommunicator
 from services.vehicle.screen_renderers.settings_renderer import SettingsRenderer
 from services.vehicle.screen_listener.frame_listener import FrameListener
 from services.vehicle.screen_renderers.bank_renderer import BankRenderer
+from services.vehicle.lto.blank_bank import BlankBank
 
 
 class Screen:
@@ -29,6 +30,7 @@ class Screen:
         self.page(self.VOLTAGES_PAGE)
         self._frame_listener = FrameListener(self._communicator, self._frame_callback)
         self._frame_listener.start()
+        self.render_bank(BlankBank(bank_number=1))
 
     def page(self, page_object):
         self._page = self._page_id(page_object)
