@@ -1,4 +1,5 @@
 from services.vehicle.screen_renderers.settings_renderer import SettingsRenderer
+from services.vehicle.screen_listener.screen_frame_processor import ScreenFrameProcessor
 
 import threading
 import time
@@ -7,8 +8,9 @@ import time
 class FrameListener:
     def __init__(self, communicator, frame_callback):
         self._communicator = communicator
-        self._settings_renderer = SettingsRenderer(communicator)
         self._frame_callback = frame_callback
+        self._settings_renderer = SettingsRenderer(communicator)
+        self._screen_frame_processor = ScreenFrameProcessor()
 
     def start(self):
         self._settings_renderer.render()

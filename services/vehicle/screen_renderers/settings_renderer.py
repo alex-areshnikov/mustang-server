@@ -8,6 +8,7 @@ class SettingsRenderer:
         self._communicator = communicator
 
     def render(self, config=Config()):
+        config.reload()
         charging = "ON" if config.screen_setting_charging else "OFF"
         self._communicator.print(f"{self.SETTINGS_PAGE}.g_charging.txt=\"{charging}\"")
         self._communicator.print(f"{self.SETTINGS_PAGE}.g_max_cell_v.txt=\"{config.screen_setting_max_cell_v}\"")
