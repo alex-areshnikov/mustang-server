@@ -8,7 +8,8 @@ from services.vehicle.screen_listener.frame_listener import FrameListener
 class TestScreen(object):
     @patch.object(SettingsRenderer, 'render')
     @patch.object(FrameListener, 'start')
-    def test_it_initializes_screen(self, mock_start_listener, mock_render, capfd):
+    @patch.object(Screen, 'render_bank')
+    def test_it_initializes_screen(self, mock_render_bank, mock_start_listener, mock_render, capfd):
         screen = Screen(debug=True)
         screen.initialize()
         out, err = capfd.readouterr()

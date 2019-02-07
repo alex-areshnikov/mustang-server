@@ -27,4 +27,5 @@ class FrameListener:
                 self._screen_frame_processor.process(frame, self._frame_callback)
                 self._settings_renderer.render()
 
+            self._frame_callback()
             time.sleep(0.1)
