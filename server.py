@@ -7,7 +7,7 @@ from services.publishers.ping_publisher import PingPublisher
 from services.vehicle.keep_alive import KeepAlive
 
 config = Config()
-screen = Screen()
+screen = Screen(config)
 keep_alive = KeepAlive(screen)
 
 
@@ -31,7 +31,12 @@ def on_message(client, userdata, msg):
     try:
         selector = ResolverSelector(msg.topic)
         resolver = selector.resolver()
-        resolver.resolve(msg.payload, keep_alive)
+        resources = {
+            "screen": screen,
+            "keep_alive": keep_alive
+        }
+
+        resolver.resolve(msg.payload, resources)
     except Exception as ex:
         traceback.print_exc()
 

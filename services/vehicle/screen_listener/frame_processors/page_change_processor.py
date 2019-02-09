@@ -5,4 +5,4 @@ class PageChangeProcessor:
         self._frame = frame
 
     def process(self, callback):
-        callback(page_id=self._frame[self.PAGE_ID_INDEX])
+        callback({"page_id": self._frame[self.PAGE_ID_INDEX]})

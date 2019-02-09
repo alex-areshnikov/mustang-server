@@ -19,3 +19,12 @@ class BlankBank:
     @property
     def number(self):
         return self._bank_number
+
+    def calculate_overcharged(self, _):
+        pass
+
+    def is_overcharged(self):
+        return False
+
+    def is_cell_overcharged(self, _):
+        return False
