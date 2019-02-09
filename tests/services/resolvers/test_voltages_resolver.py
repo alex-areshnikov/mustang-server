@@ -4,9 +4,8 @@ from services.vehicle.keep_alive import KeepAlive
 
 
 class TestVoltagesResolver(object):
-    def test_it_resolves_payload(self):
+    def test_it_resolves_payload(self, screen):
         resolver = VoltagesResolver()
-        screen = Screen(debug=True)
 
         payload = '{"name":"Bank 1",'
         payload += '"voltages":[2.3,4.61,6.93,9.26,11.6,13.95]}'
@@ -16,5 +15,5 @@ class TestVoltagesResolver(object):
             "voltages": [2.3, 4.61, 6.93, 9.26, 11.6, 13.95]
         }
 
-        banks_voltages = resolver.resolve(payload, KeepAlive(screen))
+        banks_voltages = resolver.resolve(payload, {"screen": screen})
         assert banks_voltages == resolved_payload

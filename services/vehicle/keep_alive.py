@@ -12,10 +12,6 @@ class KeepAlive:
         self._ping_timestamp = datetime.now()
         self._pong_timestamp = None
 
-    @property
-    def screen(self):
-        return self._screen
-
     def ping(self):
         if(self._is_alive()):
             self._process_alive()

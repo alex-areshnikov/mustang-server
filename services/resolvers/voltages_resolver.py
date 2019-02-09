@@ -6,8 +6,8 @@ class VoltagesResolver:
     def __init__(self, _=None):
         pass
 
-    def resolve(self, payload, keep_alive):
-        screen = keep_alive.screen
+    def resolve(self, payload, resources):
+        screen = resources["screen"]
         bank_voltages = self._parse_payload(payload)
         bank = Bank(bank_voltages=bank_voltages, bank_number=1)
         screen.render_bank(bank)

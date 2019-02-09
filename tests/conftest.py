@@ -3,6 +3,8 @@ import pytest
 from unittest.mock import patch
 from services.util.config import Config
 from services.vehicle.lto.bank import Bank
+from services.vehicle.lto.blank_bank import BlankBank
+from services.vehicle.screen import Screen
 
 
 @pytest.fixture
@@ -24,6 +26,24 @@ def make_config():
 
 
 @pytest.fixture
+def screen(config):
+    return Screen(config, debug=True)
+
+
+@pytest.fixture
 def bank():
     voltages = [2.3, 4.61, 6.93, 9.26, 11.6, 13.95]
     return Bank(bank_number=2, bank_voltages={"voltages": voltages})
+
+
+@pytest.fixture
+def blank_bank():
+    return BlankBank(bank_number=2)
+
+
+@pytest.fixture
+def frame_callback():
+    def _frame_callback(actions={}):
+        pass
+
+    return _frame_callback
