@@ -11,7 +11,7 @@ class TestScreen(object):
     @patch.object(FrameListener, 'start')
     @patch.object(Screen, 'render_bank')
     def test_it_initializes_screen(self, mock_render_bank, mock_start_listener, mock_render, screen, capfd):
-        screen.initialize()
+        screen.initialize(None)
         out, err = capfd.readouterr()
         assert out == ("Started connection @9600\n"
                        "baud=115200\n"
