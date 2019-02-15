@@ -23,8 +23,11 @@ class Screen:
         self._config = config
         self._charging = True
         self._banks_comparator = BanksComparator()
+        self._publisher = None
 
-    def initialize(self):
+    def initialize(self, publisher):
+        self._publisher = publisher
+
         self._communicator.start()
         self._communicator.print("baud=115200")
         self._communicator.close()
@@ -60,8 +63,14 @@ class Screen:
         self._communicator.print(f"dim={self._config.screen_setting_brightness * 10}")
 
     def _render_charging(self):
+        self.publish_charging()
+
         if(self._page == self._page_id(self.VOLTAGES_PAGE)):
             self._communicator.print(f"vis iDischarge,{0 if self._is_charging_enabled() else 1}")
+
+    def publish_charging(self):
+        if(self._publisher):
+            self._publisher.charging(1 if self._is_charging_enabled() else 0)
 
     def _is_charging_enabled(self):
         return self._charging and self._config.screen_setting_charging
@@ -77,3 +86,4 @@ class Screen:
         if(actions.get("settings_update")):
             self._config.reload()
             self._render_brightness()
+            self.publish_charging()

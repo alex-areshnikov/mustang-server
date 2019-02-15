@@ -3,6 +3,7 @@ import traceback
 from services.resolvers.resolver_selector import ResolverSelector
 from services.vehicle.screen import Screen
 from services.util.config import Config
+from services.publishers.generic_publisher import GenericPublisher
 from services.publishers.ping_publisher import PingPublisher
 from services.vehicle.keep_alive import KeepAlive
 
@@ -18,7 +19,8 @@ def on_connect(client, userdata, flags, rc):
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
     try:
-        screen.initialize()
+        publisher = GenericPublisher(client)
+        screen.initialize(publisher)
         client.subscribe("vehicle/lto/voltages")
         client.subscribe(PingPublisher.KEEP_ALIVE_TOPIC)
         PingPublisher(client, keep_alive).run()
