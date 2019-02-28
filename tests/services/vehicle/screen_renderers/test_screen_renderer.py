@@ -9,4 +9,5 @@ class TestSettingsRenderer(object):
         out, err = capfd.readouterr()
         assert out == ("SettingsPage.g_charging.txt=\"ON\"\n"
                        "SettingsPage.g_max_cell_v.txt=\"2.65\"\n"
+                       "SettingsPage.g_t_lights.txt=\"OFF\"\n"
                        "SettingsPage.g_brightness.txt=\"10\"\n")

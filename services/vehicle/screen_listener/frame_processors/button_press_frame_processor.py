@@ -1,6 +1,7 @@
 from services.vehicle.settings.charging_setting import ChargingSetting
 from services.vehicle.settings.max_cell_voltage_setting import MaxCellVoltageSetting
 from services.vehicle.settings.brightness_setting import BrightnessSetting
+from services.vehicle.settings.trunk_lights_setting import TrunkLightsSetting
 from services.vehicle.settings.unknown_setting import UnknownSetting
 
 
@@ -14,6 +15,8 @@ class ButtonPressFrameProcessor:
     MAX_CELL_V_DECREASE_BUTTON_ID = b'\x07'
     BRIGHTNESS_INCREASE_BUTTON_ID = b'\x0D'
     BRIGHTNESS_DECREASE_BUTTON_ID = b'\x0C'
+    TRUNK_LIGHTS_INCREASE_BUTTON_ID = b'\x12'
+    TRUNK_LIGHTS_DECREASE_BUTTON_ID = b'\x11'
 
     def __init__(self, frame):
         self._button_id = bytes([frame[self.BUTTON_ID_INDEX]])
@@ -25,19 +28,23 @@ class ButtonPressFrameProcessor:
             self.MAX_CELL_V_INCREASE_BUTTON_ID: MaxCellVoltageSetting,
             self.MAX_CELL_V_DECREASE_BUTTON_ID: MaxCellVoltageSetting,
             self.BRIGHTNESS_INCREASE_BUTTON_ID: BrightnessSetting,
-            self.BRIGHTNESS_DECREASE_BUTTON_ID: BrightnessSetting
+            self.BRIGHTNESS_DECREASE_BUTTON_ID: BrightnessSetting,
+            self.TRUNK_LIGHTS_INCREASE_BUTTON_ID: TrunkLightsSetting,
+            self.TRUNK_LIGHTS_DECREASE_BUTTON_ID: TrunkLightsSetting
         }
 
         self._increase_ids = [
             self.CHARGING_INCREASE_BUTTON_ID,
             self.MAX_CELL_V_INCREASE_BUTTON_ID,
-            self.BRIGHTNESS_INCREASE_BUTTON_ID
+            self.BRIGHTNESS_INCREASE_BUTTON_ID,
+            self.TRUNK_LIGHTS_INCREASE_BUTTON_ID
         ]
 
         self._decrease_ids = [
             self.CHARGING_DECREASE_BUTTON_ID,
             self.MAX_CELL_V_DECREASE_BUTTON_ID,
-            self.BRIGHTNESS_DECREASE_BUTTON_ID
+            self.BRIGHTNESS_DECREASE_BUTTON_ID,
+            self.TRUNK_LIGHTS_DECREASE_BUTTON_ID
         ]
 
     def process(self, callback):
