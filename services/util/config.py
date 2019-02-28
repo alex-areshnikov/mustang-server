@@ -7,13 +7,15 @@ class Config(object):
     SCREEN_SETTING_CHARGING = "screen_setting_charging"
     SCREEN_SETTING_MAX_CELL_V = "screen_setting_max_cell_v"
     SCREEN_SETTING_BRIGHTNESS = "screen_setting_brightness"
+    SCREEN_SETTING_TRUNK_LIGHTS = "screen_setting_trunk_lights"
 
     _default_config = {
         "mqtt_host": "mustang.local",
         "mqtt_port": 1883,
         SCREEN_SETTING_CHARGING: True,
         SCREEN_SETTING_MAX_CELL_V: 2.65,
-        SCREEN_SETTING_BRIGHTNESS: 10
+        SCREEN_SETTING_BRIGHTNESS: 10,
+        SCREEN_SETTING_TRUNK_LIGHTS: False
     }
 
     def __init__(self, config_file_name="config.yaml"):
