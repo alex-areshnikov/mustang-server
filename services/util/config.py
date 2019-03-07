@@ -1,80 +1,58 @@
+from services.util.redis_storage import RedisStorage
+
 import os
 import sys
 import yaml
 
 
-class Config(object):
+class Config:
+    MQTT_HOST = "mqtt_host"
+    MQTT_PORT = "mqtt_port"
     SCREEN_SETTING_CHARGING = "screen_setting_charging"
     SCREEN_SETTING_MAX_CELL_V = "screen_setting_max_cell_v"
     SCREEN_SETTING_BRIGHTNESS = "screen_setting_brightness"
     SCREEN_SETTING_TRUNK_LIGHTS = "screen_setting_trunk_lights"
 
-    _default_config = {
-        "mqtt_host": "mustang.local",
-        "mqtt_port": 1883,
-        SCREEN_SETTING_CHARGING: True,
+    CONFIG_KEYS = [
+        MQTT_HOST,
+        MQTT_PORT,
+        SCREEN_SETTING_CHARGING,
+        SCREEN_SETTING_MAX_CELL_V,
+        SCREEN_SETTING_BRIGHTNESS,
+        SCREEN_SETTING_TRUNK_LIGHTS
+    ]
+
+    DEFAULT_CONFIG = {
+        MQTT_HOST: "mustang.local",
+        MQTT_PORT: 1883,
+        SCREEN_SETTING_CHARGING: "ON",
         SCREEN_SETTING_MAX_CELL_V: 2.65,
         SCREEN_SETTING_BRIGHTNESS: 10,
-        SCREEN_SETTING_TRUNK_LIGHTS: False
+        SCREEN_SETTING_TRUNK_LIGHTS: "OFF"
     }
 
-    def __init__(self, config_file_name="config.yaml"):
-        self._config_file_name = config_file_name
-        self.reload()
+    CONFIG_TYPE_CONVERTERS = {
+        MQTT_HOST: lambda value: value.decode("utf-8"),
+        MQTT_PORT: lambda value: int(value),
+        SCREEN_SETTING_CHARGING: lambda value: value.decode("utf-8"),
+        SCREEN_SETTING_MAX_CELL_V: lambda value: float(value),
+        SCREEN_SETTING_BRIGHTNESS: lambda value: int(value),
+        SCREEN_SETTING_TRUNK_LIGHTS: lambda value: value.decode("utf-8")
+    }
 
-    def reload(self):
-        file_path = os.path.dirname(os.path.realpath(__file__))
-        self._config_path = file_path.replace("services/util", self._config_file_name)
-        self._config = self._default_config.copy()
-        self._config.update(self._yaml_config())
-        self._config_to_object()
+    def __init__(self, storage=RedisStorage()):
+        self._storage = storage
 
-    @property
-    def config_path(self):
-        return self._config_path
+    def __getattr__(self, method_name):
+        if method_name in self.CONFIG_KEYS:
+            return self._get(method_name)
+        else:
+            raise AttributeError(f'No such attribute: {method_name}')
+
+    def _get(self, config_key):
+        converter = self.CONFIG_TYPE_CONVERTERS.get(config_key)
+        value = self._storage.get(config_key)
+        return converter(value) if value else self.DEFAULT_CONFIG.get(config_key)
 
     def update(self, key, value):
-        if not key:
-            return
-
-        self._config.update(self._yaml_config())
-        self._config[key] = value
-        self._сonfig_to_yaml()
-        self._config_to_object()
-
-    def delete_key(self, key):
-        self._config.pop(key, None)
-        self._config_to_yaml()
-        try:
-            delattr(self, key)
-        except AttributeError as exc:
-            print(f"Attr {key} not found. Skipped.")
-
-    def _сonfig_to_yaml(self):
-        with open(self._config_path, 'w+') as stream:
-            try:
-                yaml.dump(self._config, stream, default_flow_style=False)
-            except yaml.YAMLError as exc:
-                print(exc)
-
-    def _config_to_object(self):
-        for a, b in self._config.items():
-            if isinstance(b, (list, tuple)):
-                setattr(self, a,
-                        [obj(x) if isinstance(x, dict) else x for x in b])
-            else:
-                setattr(self, a, obj(b) if isinstance(b, dict) else b)
-
-    def _yaml_config(self):
-        yaml_config = {}
-
-        try:
-            with open(self._config_path, 'r') as stream:
-                try:
-                    yaml_config = yaml.load(stream)
-                except yaml.YAMLError as exc:
-                    print(exc)
-        except FileNotFoundError as exc:
-            print(exc)
-
-        return yaml_config
+        self._storage.set(key, value)

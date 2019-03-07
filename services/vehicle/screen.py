@@ -75,10 +75,10 @@ class Screen:
 
     def _publish_trunk_lights(self):
         if(self._publisher):
-            self._publisher.trunk_lights(0 if self._config.screen_setting_trunk_lights else 1)
+            self._publisher.trunk_lights(0 if self._config.screen_setting_trunk_lights == "ON" else 1)
 
     def _is_charging_enabled(self):
-        return self._charging and self._config.screen_setting_charging
+        return self._charging and self._config.screen_setting_charging == "ON"
 
     def _page_id(self, page_object):
         return self.SCREEN_PAGE_IDS.get(page_object, 0)
@@ -89,7 +89,6 @@ class Screen:
             self._render_charging()
 
         if(actions.get("settings_update")):
-            self._config.reload()
             self._render_brightness()
             self._publish_charging()
             self._publish_trunk_lights()
