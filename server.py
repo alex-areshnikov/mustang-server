@@ -52,13 +52,7 @@ mqtt_client.on_connect = on_connect
 mqtt_client.on_message = on_message
 mqtt_client.on_disconnect = on_disconnect
 
-for i in range(0, 15):
-    while True:
-        try:
-            mqtt_client.connect(config.mqtt_host, config.mqtt_port)
-        except:
-            continue
-        break
+mqtt_client.connect(config.mqtt_host, config.mqtt_port)
 
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
