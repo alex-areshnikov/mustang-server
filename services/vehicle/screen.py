@@ -3,7 +3,6 @@ from services.util.communicators.stdout import Stdout as StdoutCommunicator
 from services.vehicle.screen_renderers.settings_renderer import SettingsRenderer
 from services.vehicle.screen_renderers.bank_renderer import BankRenderer
 from services.vehicle.screen_listener.frame_listener import FrameListener
-from services.vehicle.lto.banks_comparator import BanksComparator
 
 
 class Screen:
@@ -22,8 +21,8 @@ class Screen:
         self._bank_renderer = BankRenderer(self._communicator)
         self._config = config
         self._charging = True
-        self._banks_comparator = BanksComparator()
         self._publisher = None
+        self._render_charging_required = False
 
     def initialize(self, publisher):
         self._publisher = publisher
@@ -48,14 +47,16 @@ class Screen:
         if(self._page != self._page_id(self.VOLTAGES_PAGE)):
             return
 
-        bank.calculate_overcharged(self._config.screen_setting_max_cell_v)
-        is_overcharged = self._banks_comparator.compare_overcharged(bank)
-
-        if(is_overcharged != BanksComparator.NO_CHANGE_CHARGE_TRANSITION):
-            self._charging = not is_overcharged
+        if(self._render_charging_required):
+            self._render_charging_required = False
             self._render_charging()
 
         self._bank_renderer.render(bank)
+
+    def set_charging(self, is_charging):
+        if(is_charging != self._charging):
+            self._charging = is_charging
+            self._render_charging_required = True
 
     def close(self):
         self._communicator.close()

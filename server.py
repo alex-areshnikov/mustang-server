@@ -6,10 +6,12 @@ from services.util.config import Config
 from services.publishers.generic_publisher import GenericPublisher
 from services.publishers.ping_publisher import PingPublisher
 from services.vehicle.keep_alive import KeepAlive
+from services.vehicle.lto.overcharge_processor import OverchargeProcessor
 
 config = Config()
 screen = Screen(config)
 keep_alive = KeepAlive(screen)
+overcharge_processor = OverchargeProcessor()
 
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -34,8 +36,10 @@ def on_message(client, userdata, msg):
         selector = ResolverSelector(msg.topic)
         resolver = selector.resolver()
         resources = {
+            "config": config,
             "screen": screen,
             "keep_alive": keep_alive
+            "overcharge_processor": overcharge_processor
         }
 
         resolver.resolve(msg.payload, resources)

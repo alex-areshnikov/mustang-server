@@ -5,6 +5,7 @@ from services.util.redis_storage import RedisStorage
 from services.vehicle.lto.bank import Bank
 from services.vehicle.lto.blank_bank import BlankBank
 from services.vehicle.screen import Screen
+from services.vehicle.lto.overcharge_processor import OverchargeProcessor
 
 
 @pytest.fixture
@@ -23,6 +24,11 @@ def make_config():
 @pytest.fixture
 def screen(config):
     return Screen(config, debug=True)
+
+
+@pytest.fixture
+def overcharge_processor():
+    return OverchargeProcessor()
 
 
 @pytest.fixture
