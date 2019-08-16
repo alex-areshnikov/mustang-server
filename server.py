@@ -38,7 +38,7 @@ def on_message(client, userdata, msg):
         resources = {
             "config": config,
             "screen": screen,
-            "keep_alive": keep_alive
+            "keep_alive": keep_alive,
             "overcharge_processor": overcharge_processor
         }
 
