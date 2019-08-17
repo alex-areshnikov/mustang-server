@@ -18,7 +18,8 @@ class TestScreen(object):
                        "Started connection @115200\n"
                        "page 1\n"
                        "vis iDischarge,0\n"
-                       "dim=100\n")
+                       "dim=100\n"
+                       "b1label.txt=\"\"\n")
 
     def test_it_sets_page(self, screen, capfd):
         screen.page(screen.VOLTAGES_PAGE)
@@ -99,6 +100,18 @@ class TestScreen(object):
                        "b2s5.pco=65535\n"
                        "b2s6.txt=\"-.--v\"\n"
                        "b2s6.pco=65535\n")
+
+    def test_it_renders_clipping(self, screen, capfd):
+        screen.render_clipping(True)
+        screen.page(screen.VOLTAGES_PAGE)
+        screen.render_clipping(True)
+        screen.render_clipping(False)
+
+        out, err = capfd.readouterr()
+        assert out == ("page 1\n"
+                       "vis iDischarge,0\n"
+                       "b1label.txt=\"! CLIPPING !\"\n"
+                       "b1label.txt=\"\"\n")
 
     def test_it_closes_connection(self, screen, capfd):
         screen.close()

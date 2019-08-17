@@ -1,10 +1,9 @@
 import threading
 import time
+from services.resolvers.resolver_selector import ResolverSelector
 
 
 class PingPublisher:
-    KEEP_ALIVE_TOPIC = "vehicle/lto/keep_alive"
-
     def __init__(self, client, keep_alive):
         self._client = client
         self._keep_alive = keep_alive
@@ -15,6 +14,6 @@ class PingPublisher:
 
     def _start(self):
         while True:
-            self._client.publish(self.KEEP_ALIVE_TOPIC, 'ping')
+            self._client.publish(ResolverSelector.KEEP_ALIVE_TOPIC, 'ping')
             self._keep_alive.ping()
             time.sleep(self._keep_alive.INTERVAL_SECONDS)

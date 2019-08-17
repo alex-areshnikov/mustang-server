@@ -6,6 +6,7 @@ from services.vehicle.lto.bank import Bank
 from services.vehicle.lto.blank_bank import BlankBank
 from services.vehicle.screen import Screen
 from services.vehicle.lto.overcharge_processor import OverchargeProcessor
+from services.vehicle.amplifier.clipping_processor import ClippingProcessor
 
 
 @pytest.fixture
@@ -29,6 +30,11 @@ def screen(config):
 @pytest.fixture
 def overcharge_processor():
     return OverchargeProcessor()
+
+
+@pytest.fixture
+def clipping_processor():
+    return ClippingProcessor()
 
 
 @pytest.fixture

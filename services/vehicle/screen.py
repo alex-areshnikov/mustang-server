@@ -36,6 +36,7 @@ class Screen:
         self._frame_listener = FrameListener(self._communicator, self._frame_callback)
         self._frame_listener.start()
         self._render_brightness()
+        self.render_clipping(False)
         self._publish_trunk_lights()
 
     def page(self, page_object):
@@ -52,6 +53,13 @@ class Screen:
             self._render_charging()
 
         self._bank_renderer.render(bank)
+
+    def render_clipping(self, is_clipping):
+        if(self._page != self._page_id(self.VOLTAGES_PAGE)):
+            return
+
+        clipping_text = ("! CLIPPING !" if is_clipping else "")
+        self._communicator.print(f"b1label.txt=\"{clipping_text}\"")
 
     def set_charging(self, is_charging):
         if(is_charging != self._charging):

@@ -7,11 +7,13 @@ from services.publishers.generic_publisher import GenericPublisher
 from services.publishers.ping_publisher import PingPublisher
 from services.vehicle.keep_alive import KeepAlive
 from services.vehicle.lto.overcharge_processor import OverchargeProcessor
+from services.vehicle.amplifier.clipping_processor import ClippingProcessor
 
 config = Config()
 screen = Screen(config)
 keep_alive = KeepAlive(screen)
 overcharge_processor = OverchargeProcessor()
+clipping_processor = ClippingProcessor()
 
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -23,8 +25,9 @@ def on_connect(client, userdata, flags, rc):
     try:
         publisher = GenericPublisher(client)
         screen.initialize(publisher)
-        client.subscribe("vehicle/lto/voltages")
-        client.subscribe(PingPublisher.KEEP_ALIVE_TOPIC)
+        client.subscribe(ResolverSelector.VOLTAGES_TOPIC)
+        client.subscribe(ResolverSelector.KEEP_ALIVE_TOPIC)
+        client.subscribe(ResolverSelector.CLIPPING_TOPIC)
         PingPublisher(client, keep_alive).run()
     except Exception as ex:
         traceback.print_exc()
@@ -39,7 +42,8 @@ def on_message(client, userdata, msg):
             "config": config,
             "screen": screen,
             "keep_alive": keep_alive,
-            "overcharge_processor": overcharge_processor
+            "overcharge_processor": overcharge_processor,
+            "clipping_processor": clipping_processor
         }
 
         resolver.resolve(msg.payload, resources)
