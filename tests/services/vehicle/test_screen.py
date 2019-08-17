@@ -42,7 +42,6 @@ class TestScreen(object):
         out, err = capfd.readouterr()
         assert out == ("page 1\n"
                        "vis iDischarge,0\n"
-                       "b2label.txt=\"Bank 2\"\n"
                        "b2total.txt=\"13.95v\"\n"
                        "b2s1.txt=\"2.3v\"\n"
                        "b2s1.pco=65535\n"
@@ -65,7 +64,6 @@ class TestScreen(object):
         assert out == ("page 1\n"
                        "vis iDischarge,0\n"
                        "vis iDischarge,1\n"
-                       "b2label.txt=\"Bank 2\"\n"
                        "b2total.txt=\"13.95v\"\n"
                        "b2s1.txt=\"2.3v\"\n"
                        "b2s1.pco=65535\n"
@@ -86,7 +84,6 @@ class TestScreen(object):
         out, err = capfd.readouterr()
         assert out == ("page 1\n"
                        "vis iDischarge,0\n"
-                       "b2label.txt=\"-\"\n"
                        "b2total.txt=\"--.--v\"\n"
                        "b2s1.txt=\"-.--v\"\n"
                        "b2s1.pco=65535\n"
