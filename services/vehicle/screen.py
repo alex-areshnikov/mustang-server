@@ -58,7 +58,7 @@ class Screen:
         if(self._page != self._page_id(self.VOLTAGES_PAGE)):
             return
 
-        clipping_text = ("! CLIPPING !" if is_clipping else "")
+        clipping_text = ("CLIPPING!" if is_clipping else "")
         self._communicator.print(f"b1label.txt=\"{clipping_text}\"")
 
     def set_charging(self, is_charging):

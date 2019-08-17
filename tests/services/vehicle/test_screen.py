@@ -107,7 +107,7 @@ class TestScreen(object):
         out, err = capfd.readouterr()
         assert out == ("page 1\n"
                        "vis iDischarge,0\n"
-                       "b1label.txt=\"! CLIPPING !\"\n"
+                       "b1label.txt=\"CLIPPING!\"\n"
                        "b1label.txt=\"\"\n")
 
     def test_it_closes_connection(self, screen, capfd):
